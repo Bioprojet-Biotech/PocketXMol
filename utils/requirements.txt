@@ -1,11 +1,9 @@
+# Dependencies are managed in the project root via uv (pyproject.toml).
+# Install with: uv sync  (from repo root)
+#
+# Legacy pip install (not recommended):
+#   pip install meeko==0.1.dev3 openmm==0.2 pdbfixer==1.8.1
+
 meeko==0.1.dev3
 openmm==0.2
 pdbfixer==1.8.1
-
-
-
-# create env from yml file
-conda env create -f environment.yml
-
-# remove env
-conda remove --name pxm --all

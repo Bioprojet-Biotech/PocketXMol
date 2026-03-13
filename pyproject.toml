@@ -1,0 +1,59 @@
+[project]
+name = "pocketxmol"
+version = "0.1.0"
+description = "PocketXMol: pocket-interacting foundation model for 3D molecular generation"
+readme = "README.md"
+license = { text = "MIT" }
+requires-python = ">=3.9,<3.13"
+dependencies = [
+    # Core scientific stack (from environment*.yml)
+    "numpy>=1.24,<2",
+    "pandas>=1.5.2",
+    "scipy>=1.8.0",
+    "scikit-learn>=1.1.0",
+    "networkx>=2.8",
+    # Bio/chem informatics
+    "biopython>=1.83",
+    "rdkit>=2023.9.3",
+    "peptidebuilder>=1.1.0",
+    "openbabel-wheel>=3.1.1.11",
+    # Data & config
+    "lmdb>=1.2.1",
+    "easydict>=1.9",
+    "pyyaml>=5.4",
+    "tqdm>=4.64",
+    "tensorboard>=2.20",
+    "seaborn>=0.12",
+    # Utils (from utils/requirements.txt)
+    "meeko>=0.1.dev3",
+    "openmm>=0.2",
+    "pdbfixer>=1.8.1",
+]
+
+[project.optional-dependencies]
+# PyTorch stack from PyPI (CPU on Windows/macOS; may resolve to CUDA on Linux).
+# For a specific CUDA build, install after sync: see docs/setup.md
+torch = [
+    "torch>=2.0",
+    "lightning",
+    "torch_geometric>=2.3",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["utils", "models", "process", "evaluate"]
+
+[tool.uv]
+# Pin dev dependency group if needed later
+# dev-dependencies = []
+
+[tool.uv.sources]
+# Uncomment and use one of these to force a specific PyTorch index (see docs/setup.md).
+# torch = { index = "pytorch-cu128" }
+# [[tool.uv.index]]
+# name = "pytorch-cu128"
+# url = "https://download.pytorch.org/whl/cu128"
+# explicit = true

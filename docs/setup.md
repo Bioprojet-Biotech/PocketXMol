@@ -4,7 +4,31 @@
 
 ## 1. Environment Setup
 
-### Option A: Conda (Recommended)
+### Option A: uv (Recommended)
+
+[uv](https://docs.astral.sh/uv/) is a fast Python package manager. From the repo root:
+
+```bash
+# Install uv if needed: curl -LsSf https://astral.sh/uv/install.sh | sh
+uv sync --extra torch
+```
+
+This creates a virtual environment in `.venv`, installs all dependencies from `pyproject.toml`, and the optional PyTorch stack from PyPI (CPU on Windows/macOS; on Linux, PyPI may serve CUDA wheels).
+
+**CUDA 12.8 (Linux):** To use a specific PyTorch CUDA build and PyG wheels, after `uv sync --extra torch` run:
+
+```bash
+source .venv/bin/activate  # or .venv\Scripts\activate on Windows
+uv pip install torch==2.7.0 --index-url https://download.pytorch.org/whl/cu128
+uv pip install lightning torch_geometric
+uv pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.7.0+cu128.html
+```
+
+**CUDA 12.6 (Linux):** Use PyTorch cu126 index and matching PyG URL (e.g. `torch-2.6.0+cu126`).
+
+Run scripts with the project’s Python: `uv run python scripts/sample_use.py ...` (no need to activate the venv). If you clone the repo without a lockfile, run `uv lock` once (requires [uv](https://docs.astral.sh/uv/) installed) to generate `uv.lock`.
+
+### Option B: Conda
 
 To set up the environment on Linux (with CUDA 11.7), use [Anaconda](https://docs.anaconda.com/free/anaconda/install/index.html) to create a new environment `pxm` from `environment.yml`:
 
@@ -15,9 +39,7 @@ conda activate pxm
 
 > **Note:** If you have a different CUDA version, modify the pytorch-related package versions in `environment.yml` before creating the environment.
 
-### Option A2: Conda for CUDA 12.8
-
-For systems with **CUDA 12.8**, use the provided base environment file `environment_cu128_base.yml`:
+**Conda for CUDA 12.8:** Use the provided base environment file `environment_cu128_base.yml`:
 
 ```bash
 conda env create -f environment_cu128_base.yml
@@ -32,8 +54,7 @@ pip install lightning torch_geometric
 pip install pyg_lib torch_scatter torch_sparse torch_cluster torch_spline_conv -f https://data.pyg.org/whl/torch-2.7.0+cu128.html
 ```
 
-
-### Option B: Manual Installation (Pip)
+### Option C: Manual Installation (Pip)
 
 If you need custom versions (e.g., specific CUDA/PyTorch/PyG pins), install packages step by step.
 
@@ -42,9 +63,7 @@ For example, for CUDA 12.6 (Python 3.10):
 # PyTorch for CUDA 12.6
 pip install torch==2.6.0 --index-url https://download.pytorch.org/whl/cu126
 pip install pytorch-lightning==2.6.0
-# pip install pytorch-lightning==2.3.0
 pip install torch_geometric==2.6.1
-# pip install torch_geometric==2.7.0
 
 # PyG extensions (must match torch version + CUDA tag)
 pip install torch_scatter torch_sparse torch_cluster -f https://data.pyg.org/whl/torch-2.6.0+cu126.html

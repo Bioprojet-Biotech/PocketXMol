@@ -34,14 +34,21 @@ Interactive notebooks are available under [notebooks/](notebooks) and on Colab:
 
 ### 1) Create the environment
 
-Using conda to create the environment. For CUDA 11.7, use the provided `environment.yml`:
+**Using uv (recommended):** From the repo root, run `uv sync --extra torch` to create a virtual environment and install dependencies. For a specific CUDA build, see [Setup Guide](docs/setup.md).
+
+```bash
+uv sync --extra torch
+uv run python scripts/sample_use.py ...
+```
+
+**Using conda:** For CUDA 11.7, use the provided `environment.yml`:
 
 ```bash
 conda env create -f environment.yml
 conda activate pxm
 ```
 
-For other options (manual pip), see [Setup Guide](docs/setup.md).
+For other options (manual pip, CUDA 12.8), see [Setup Guide](docs/setup.md).
 
 ### 2) Download model weights
 
